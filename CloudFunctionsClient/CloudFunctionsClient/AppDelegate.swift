@@ -9,8 +9,8 @@
 import UIKit
 
 public struct EnvVarConstantKeys {
-    static let defaultOpenWhiskToken = "MmZlYWQ5MWMtMmNhOC00ODFmLWJkM2UtNDQ2ODgyMWI0ZDVmOllnUDB5d1VjQWxocEpLRDRVQTlVdzFOUFNtTVBaWk5QbXRIejZVNzV5aVN6Uzk0TUJuT0xrSmVZVVVGOE9tZk8="
-    static let actionURL = "https://openwhisk.ng.bluemix.net/api/v1/namespaces/david.okun_dev/actions/fetchForeignBitcoinTest?blocking=true&result=true"
+    static let defaultOpenWhiskToken = "put token here"
+    static let actionURL = "put url here"
 }
 
 @UIApplicationMain
