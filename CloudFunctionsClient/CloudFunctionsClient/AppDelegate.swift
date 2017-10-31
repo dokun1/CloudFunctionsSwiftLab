@@ -8,6 +8,11 @@
 
 import UIKit
 
+public struct EnvVarConstantKeys {
+    static let defaultOpenWhiskToken = "MmZlYWQ5MWMtMmNhOC00ODFmLWJkM2UtNDQ2ODgyMWI0ZDVmOllnUDB5d1VjQWxocEpLRDRVQTlVdzFOUFNtTVBaWk5QbXRIejZVNzV5aVN6Uzk0TUJuT0xrSmVZVVVGOE9tZk8="
+    static let actionURL = "https://openwhisk.ng.bluemix.net/api/v1/namespaces/david.okun_dev/actions/fetchForeignBitcoinTest?blocking=true&result=true"
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -16,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UserDefaults.standard.set(EnvVarConstantKeys.defaultOpenWhiskToken, forKey: WebAPIConstantKeys.openWhiskToken)
+        UserDefaults.standard.set(EnvVarConstantKeys.actionURL, forKey: WebAPIConstantKeys.hostURL)
+        UserDefaults.standard.synchronize()
         return true
     }
 

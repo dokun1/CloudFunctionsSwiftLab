@@ -12,6 +12,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WebAPI.fetchPrice(for: "USD") { response, errorMessage in
+            print(response)
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
 
