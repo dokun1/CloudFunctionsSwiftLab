@@ -32,7 +32,7 @@ public struct WebAPIConstantKeys {
 public struct CurrencyResponse {
     var name: String
     var value: Double
-    var currencyCode: String
+    var code: String
 }
 
 
@@ -81,7 +81,7 @@ class WebAPI: NSObject {
                                 completion(nil, "Could not parse response")
                                 return
                             }
-                            let response = CurrencyResponse(name: name, value: value, currencyCode: responseCode)
+                            let response = CurrencyResponse(name: name, value: value, code: responseCode)
                             completion(response, nil)
                         } catch {
                             completion(nil, "Uncaught exception")
