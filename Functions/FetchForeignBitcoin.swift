@@ -1,6 +1,6 @@
 import Foundation
 
-let bitcoinURL = URL(string: "https://api.coindesk.com/v1/bpi/currentprice.json") 
+let bitcoinURLPrefix = "https://api.coindesk.com/v1/bpi/currentprice/"
 
 struct CurrencyResponse {
     var name: String
@@ -16,12 +16,17 @@ struct CurrencyResponse {
 
 enum APIError: Error {
     case noResponse
+    case noCode
     case parsingError
     case unknown
 }
 
-func fetchCurrency(_ url: URL) throws -> CurrencyResponse {
+func fetchCurrency(with countryCode: String) throws -> CurrencyResponse {
     do {
+        let urlString = bitcoinURLPrefix + countryCode + ".json"
+        guard let url = URL(string: urlString) else {
+            throw APIError.unknown
+        }
         let data = try Data(contentsOf: url)
         guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? Any else {
             throw APIError.parsingError
@@ -29,10 +34,10 @@ func fetchCurrency(_ url: URL) throws -> CurrencyResponse {
         guard let types = json as? [String: Any] else {
             throw APIError.parsingError
         }
-        guard let bpi = types["bpi"] as? [String : Any], let USD = bpi["USD"] as? [String : Any] else {
-            throw APIError.parsingError
+        guard let bpi = types["bpi"] as? [String : Any], let code = bpi[countryCode] as? [String : Any] else {
+            throw APIError.noCode
         }
-        let currency = CurrencyResponse(name: "Bitcoin", value: USD["rate_float"] as! Double, currencyCode: USD["code"] as! String)
+        let currency = CurrencyResponse(name: "Bitcoin", value: code["rate_float"] as! Double, currencyCode: countryCode)
         return currency
     } catch {
         throw APIError.noResponse
@@ -40,8 +45,11 @@ func fetchCurrency(_ url: URL) throws -> CurrencyResponse {
 }
 
 func main(args: [String:Any]) -> [String:Any] {
+    guard let countryCode = args["code"] as? String else {
+        return ["error" : "No country code included"]
+    }
     do {
-        let currency = try fetchCurrency(bitcoinURL!)
+        let currency = try fetchCurrency(with: countryCode)
         return ["currency" : currency.json]
     } catch {
         return ["error" : "Something uncool happened"]
